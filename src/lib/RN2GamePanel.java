@@ -12,14 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GamePanel extends JPanel implements KeyListener {
+public class RN2GamePanel extends JPanel implements KeyListener {
 	
 	private RN2Scene scene;
 	private RN2NodeRenderer renderer;
 	private BufferedImage backBuffer;
 //	private Insets insets;
 	
-	public GamePanel() {
+	public RN2GamePanel() {
 		super();
 	}
 	
@@ -59,7 +59,9 @@ public class GamePanel extends JPanel implements KeyListener {
 		backBufferG2.fillRect(0, 0, getWidth(), getHeight());
 		
 		// Now we render the entire scene!
-		renderer.scheduleNodeForRendering(scene);
+		renderer.scheduleNodeForRendering(scene); // Render scene + all it's children!
+		renderer.scheduleNodeForRendering(scene.camera); //Need to specify camera individually 
+													//because camera isn't in the scene's children array
 		renderer.renderAllNodes(backBufferG2);
 		
 		// Finally we draw the buffer image onto the main Graphics object

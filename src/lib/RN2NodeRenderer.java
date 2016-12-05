@@ -18,14 +18,44 @@ class RN2NodeRenderer {
 	public void scheduleNodeForRendering(RN2Node n) {
 		// Insert the node at the right location in the rendering list
 		// The highest zPositon goes in the front
-		//TODO implement
-		renderingLineup.add(n);
+		insertNodeAtRightPositionInRenderingLineup(n);
 		if(n.children.size() > 0) {
 			for(RN2Node child : n.children) {
 				scheduleNodeForRendering(child);
 			}
 		}
 	}
+	
+	/**
+	 * As suggested in the name, this method inserts a given node in the right 
+	 * position for rendering (based on absolute zPosition) in the renderingLineup array
+	 * @param n the node to be inserted
+	 */
+	private void insertNodeAtRightPositionInRenderingLineup(RN2Node n) {
+		// Note to self: in the future, it might be better for the sake of efficiency to
+		// use a binary search algorithm instead of linearly traversing the entire array.
+		double absZ = n.getAbsoluteZPosition();
+		if(renderingLineup.size()==0) {
+			renderingLineup.add(n);
+			return;
+		} else {
+			for(int i=0; i<renderingLineup.size(); i++) {
+				double otherAbsZ = renderingLineup.get(i).getAbsoluteZPosition();
+				if(i==0 && otherAbsZ > absZ) {
+					renderingLineup.add(0, n);
+					break;
+				} else if(i==renderingLineup.size()-1) {
+					renderingLineup.add(n);
+					break;
+				} else if(otherAbsZ > absZ && 
+						renderingLineup.get(i-1).getAbsoluteZPosition() <= absZ){
+					renderingLineup.add(i, n);
+					break;
+				}
+			}
+		}
+	}
+	
 	public void renderAllNodes(Graphics g) {
 		
 		for(RN2Node n: renderingLineup) {

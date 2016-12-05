@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import lib.GamePanel;
+import lib.RN2GamePanel;
 import lib.RN2Scene;
 
 public class Driver {
@@ -12,7 +12,7 @@ public class Driver {
 	public static void main(String[] args) throws InterruptedException {
 		JFrame frame = new JFrame("Renegade 2D!");
         frame.setSize(800, 600);
-        GamePanel gameView = new GamePanel();
+        RN2GamePanel gameView = new RN2GamePanel();
         frame.add(gameView);
         gameView.initialize();
         frame.addKeyListener(gameView);

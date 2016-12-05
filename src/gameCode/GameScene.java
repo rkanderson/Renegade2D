@@ -18,21 +18,27 @@ public class GameScene extends RN2Scene {
 		// TODO Auto-generated method stub
 		pn = new RN2PolygonNode(new double[]{-50, 50, 50, -50}, new double[]{50, 50, -50, -50}, 4);
 		addChild(pn);
-		pn.position.x = -200;
+		pn.position.x = 0;
 		pn.color = Color.GREEN;
+		pn.name = "green";
 		
 		pn2 = new RN2PolygonNode(new double[]{-50, 50, 50, -50}, new double[]{50, 50, -50, -50}, 4);
 		pn.addChild(pn2);
-		pn2.position.x = 200;
+		pn2.color = Color.RED;
+		pn2.position.x = 50;
+		pn2.zPosition = -1;
+		pn2.name = "red";
 		
 		pn3 = new RN2PolygonNode(new double[]{-50, 50, 50, -50}, new double[]{50, 50, -50, -50}, 4);
 		pn2.addChild(pn3);
 		pn3.position.x = 100;
+		pn3.zPosition = 10;
 		pn3.color = Color.BLUE;
 		
 		RN2PolygonNode pn4 = new RN2PolygonNode(new double[]{-50, 50, 50, -50}, new double[]{50, 50, -50, -50}, 4);
 		pn2.addChild(pn4);
 		pn4.position.x = -100;
+		pn4.zPosition = 10;
 		pn4.color = Color.BLUE;
 		
 	}
