@@ -1,7 +1,6 @@
 package lib;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 class RN2NodeRenderer {

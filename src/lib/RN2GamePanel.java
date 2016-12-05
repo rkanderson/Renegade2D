@@ -1,10 +1,7 @@
 package lib;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -12,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+@SuppressWarnings("serial")
 public class RN2GamePanel extends JPanel implements KeyListener {
 	
 	private RN2Scene scene;
@@ -46,7 +44,6 @@ public class RN2GamePanel extends JPanel implements KeyListener {
 		// To maximize speed, all nodes will be rendered on a buffer image first,
 		// and finally, after all the nodes have been rendered on that one image,
 		// that buffer image will be the one thing rendered onto the actual Graphics g
-		
 		
 		// First, we flip the transform of the backBuffer graphics so we get an origin
 		// in the lower left corner and y-up = positive

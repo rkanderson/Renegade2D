@@ -12,7 +12,7 @@ abstract public class RN2Scene extends RN2Node{
 	}
 	
 	public Color backgroundColor = Color.BLACK;
-	public RN2CameraNode camera;
+	public RN2CameraNode camera = new RN2CameraNode();
 	
 	abstract public void initialize();
 	abstract public void update(double deltaTime);
