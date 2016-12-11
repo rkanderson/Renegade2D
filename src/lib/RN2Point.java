@@ -15,7 +15,7 @@ public class RN2Point {
 				Math.pow(other.y-this.y, 2));
 	}
 	
-	public void rotateAboutOtherPoint(RN2Point other, double rad) {
+	public void rotateAboutOtherPointByRad(RN2Point other, double rad) {
 		//rotates pt1 about pt2 by given angle
 		double rotX = this.x, rotY = this.y;
 		double centerX = other.x; double centerY = other.y;
@@ -23,5 +23,9 @@ public class RN2Point {
 		double newY = centerY + (rotX-centerX)*Math.sin(rad) + (rotY-centerY)*Math.cos(rad);
 		this.x = newX;
 		this.y = newY;
+	}
+	
+	public void rotateAboutOriginByRad(double rad) {
+		rotateAboutOtherPointByRad(new RN2Point(0,0), rad);
 	}
 }

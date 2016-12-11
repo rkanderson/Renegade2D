@@ -58,27 +58,17 @@ class RN2NodeRenderer {
 	public void renderAllNodes(Graphics g) {
 		
 		for(RN2Node n: renderingLineup) {
-			// Calculate generic render coordinates
-			int renderX, renderY;
-			renderX = (int)(n.getAbsolutePosition().x + scene.width*scene.anchorX);
-			renderY = (int)(n.getAbsolutePosition().y + scene.height*scene.anchorY);
-			if(cam != null) {
-				renderX -= cam.getAbsolutePosition().x;
-				renderY -= cam.getAbsolutePosition().y;
-			}
-			//System.out.println("rendering node at "+renderX+", "+renderY);
-			
-			// Case specific rendering
 			if(n instanceof RN2PolygonNode) {
 				RN2PolygonNode p = (RN2PolygonNode)n;
 				int[] renderXVert = new int[p.numPoints];
 				int[] renderYVert = new int[p.numPoints];
 				for(int i=0; i<p.numPoints; i++) {
-					RN2Point rotatedPoint = rotatePointAboutOrigin(
-							new RN2Point(p.xVertices[i], p.yVertices[i]), n.getAbsoluteZRotation());
-					renderXVert[i] = (int)(renderX + rotatedPoint.x);
-					renderYVert[i] = (int)(renderY + rotatedPoint.y);
+					RN2Point vertPoint = new RN2Point(p.vertices[i]);
+					RN2Point absPtPos = n.convertPointToNode(vertPoint, scene);
+					renderXVert[i] = (int)(absPtPos.x - cam.position.x + scene.width*scene.anchorX);
+					renderYVert[i] = (int)(absPtPos.y - cam.position.y + scene.height*scene.anchorY);
 				}
+
 				g.setColor(p.color);
 				g.fillPolygon(renderXVert, renderYVert, p.numPoints);
 			}

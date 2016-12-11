@@ -20,7 +20,7 @@ public class Driver {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //Can set properties here
-        RN2Scene theScene = new GameScene((double)gameView.getWidth(), 
+        RN2Scene theScene = new ScaleTestingScene((double)gameView.getWidth(), 
         		(double)gameView.getHeight());
         theScene.backgroundColor = Color.WHITE;
         gameView.setScene(theScene);
