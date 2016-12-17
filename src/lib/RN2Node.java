@@ -22,10 +22,22 @@ public class RN2Node {
 	public double zPosition = 0;
 	public double zRotation = 0; // in radians
 	public double xScale = 1, yScale = 1;
-	public double opacity = 1;
+	protected double opacity = 1;
 	
 	public RN2Node() {
 		
+	}
+	
+	public void setOpacity(double o) throws IllegalStateException {
+		if(o>1 || o<0) {
+			throw new IllegalStateException("Opacity must be greater than 0 and less than 1.");
+		} else {
+			this.opacity = o;
+		}
+	}
+	
+	public void incrementOpacity(double o) throws IllegalStateException {
+		setOpacity(opacity + o);
 	}
 	
 	public void addChild(RN2Node newNode) throws IllegalStateException {
@@ -200,14 +212,37 @@ public class RN2Node {
 //		}
 //	}
 //	
+	
 	/**
-	 * @return the opacity the node should be rendered with
+	 * @return the opacity the node should be rendered with.
 	 */
 	public double getAbsoluteOpacity() {
 		if(parent==null) {
 			return opacity;
 		} else  {
-			return this.opacity * parent.get().opacity;
+			return this.opacity * parent.get().getAbsoluteOpacity();
+		}
+	}
+	
+	public RN2Node duplicate() {
+		RN2Node clone = new RN2Node();
+		setSameBasicPropertiesOnNode(clone);
+		addDuplicatesOfAllChildrenToNode(clone);
+		return clone;
+	}
+	
+	protected void setSameBasicPropertiesOnNode(RN2Node other) {
+		other.position.x = position.x;
+		other.position.y = position.y;
+		other.zPosition = zPosition;
+		other.opacity = opacity;
+		other.xScale = xScale; other.yScale = yScale;
+		other.zRotation = zRotation;
+	}
+	
+	protected void addDuplicatesOfAllChildrenToNode(RN2Node other) {
+		for(RN2Node child: children) {
+			other.addChild(child.duplicate());
 		}
 	}
 		

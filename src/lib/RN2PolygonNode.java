@@ -3,21 +3,34 @@ package lib;
 import java.awt.Color;
 
 public class RN2PolygonNode extends RN2Node {
+	/**
+	 * A node class for representing all types of polygons with different colors.
+	 * The coordinates of the vertices can be relative to any origin, allowing for
+	 * different pivot and scaling behaviors. Convenient builder classes have been defined
+	 * for common polygons.
+	 */
 	RN2Point[] vertices;
 	public Color color = Color.RED;
-	int numPoints;
 	public RN2PolygonNode(double[] xv, double[] yv, int numPoints) {
 		vertices = new RN2Point[numPoints];
 		for(int i=0; i<numPoints; i++) {
 			vertices[i] = new RN2Point(xv[i], yv[i]);
 		}
-		this.numPoints= numPoints;
 	}
 	public RN2PolygonNode(RN2Point[] vertices) {
 		this.vertices = vertices;
 	}
 	
-	// Builders added for convenience
+	@Override
+	public RN2PolygonNode duplicate() {
+		RN2PolygonNode clone = new RN2PolygonNode(vertices.clone());
+		setSameBasicPropertiesOnNode(clone);
+		addDuplicatesOfAllChildrenToNode(clone);
+		clone.color = new Color(color.getRed(), color.getGreen(), color.getBlue());
+		return clone;
+	}
+	
+	// Builders added for your convenience when creating a polygon node. you're welcome.
 	public static class RectBuilder {
 		private double width=100, height=100;
 		private double anchorX = 0.5, anchorY = 0.5;
@@ -30,10 +43,10 @@ public class RN2PolygonNode extends RN2Node {
 		public RectBuilder withAnchorY(double ay) {anchorY = ay; return this;}
 		public RN2PolygonNode build() {
 			RN2Point[] vertices = new RN2Point[4];
-			vertices[0] = new RN2Point(width*anchorX, height*anchorY);
-			vertices[1] = new RN2Point(width*anchorX, height*(1-anchorY));
-			vertices[2] = new RN2Point(width*(1-anchorX), height*(1-anchorY));
-			vertices[3] = new RN2Point(width*(1-anchorX), height*anchorY);
+			vertices[0] = new RN2Point(0-width*anchorX, 0-height*anchorY);
+			vertices[1] = new RN2Point(0-width*anchorX, height-height*anchorY);
+			vertices[2] = new RN2Point(width-width*anchorX, height-height*anchorY);
+			vertices[3] = new RN2Point(width-width*anchorX, 0-height*anchorY);
 			return new RN2PolygonNode(vertices);
 		}
 	}
@@ -55,4 +68,5 @@ public class RN2PolygonNode extends RN2Node {
 			return new RN2PolygonNode(vertices);
 		}
 	}
+	
 }

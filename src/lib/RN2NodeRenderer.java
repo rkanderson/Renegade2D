@@ -1,10 +1,12 @@
 package lib;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 class RN2NodeRenderer {
-	private ArrayList<RN2Node> renderingLineup = new ArrayList<RN2Node>();
+	public ArrayList<RN2Node> renderingLineup = new ArrayList<RN2Node>();
 	private RN2Scene scene;
 	private RN2CameraNode cam;
 	public RN2NodeRenderer() {
@@ -17,7 +19,13 @@ class RN2NodeRenderer {
 	public void scheduleNodeForRendering(RN2Node n) {
 		// Insert the node at the right location in the rendering list
 		// The highest zPositon goes in the front
-		insertNodeAtRightPositionInRenderingLineup(n);
+//		insertNodeAtRightPositionInRenderingLineup(n);
+		double[] allZs = new double[renderingLineup.size()];
+		for(int i=0; i<allZs.length; i++) {
+			allZs[i] = renderingLineup.get(i).getAbsoluteZPosition();
+		}
+		int insertAtIndex = getInsertionIndexForZPos(n.getAbsoluteZPosition(), allZs);
+		renderingLineup.add(insertAtIndex, n);
 		if(n.children.size() > 0) {
 			for(RN2Node child : n.children) {
 				scheduleNodeForRendering(child);
@@ -26,62 +34,67 @@ class RN2NodeRenderer {
 	}
 	
 	/**
-	 * As suggested in the name, this method inserts a given node in the right 
-	 * position for rendering (based on absolute zPosition) in the renderingLineup array
-	 * @param n the node to be inserted
+	 * Given a zPosition variable and an array of other z positions,
+	 * this method will return the index that the given z should be inserted
+	 * at so that the highest values are at the end of the array. Recursion power!
+	 * Note: this method doesn't actually insert anything, it just returns a "hypothetical"
+	 * index to insert at.
+	 * @param zPos the z position value  that is to be inserted
+	 * @param arr the array that the new value will be inserted into
+	 * @return the insertion index
 	 */
-	private void insertNodeAtRightPositionInRenderingLineup(RN2Node n) {
-		// Note to self: in the future, it might be better for the sake of efficiency to
-		// use a binary search algorithm instead of linearly traversing the entire array.
-		double absZ = n.getAbsoluteZPosition();
-		if(renderingLineup.size()==0) {
-			renderingLineup.add(n);
-			return;
+	private int getInsertionIndexForZPos(double zPos, double[] arr) {
+		if(arr.length == 0) {
+			return 0;
+		} else if(arr.length == 1) {
+			if(zPos >= arr[0]) {
+				return 1;
+			} else {
+				return 0;
+			}
 		} else {
-			for(int i=0; i<renderingLineup.size(); i++) {
-				double otherAbsZ = renderingLineup.get(i).getAbsoluteZPosition();
-				if(i==0 && otherAbsZ > absZ) {
-					renderingLineup.add(0, n);
-					break;
-				} else if(i==renderingLineup.size()-1) {
-					renderingLineup.add(n);
-					break;
-				} else if(otherAbsZ > absZ && 
-						renderingLineup.get(i-1).getAbsoluteZPosition() <= absZ){
-					renderingLineup.add(i, n);
-					break;
-				}
+			// Divide the array into two and recall the method but with the half
+			// that must contain the new the z value
+			double middleValue = arr[arr.length/2];
+			if(zPos>=middleValue) {
+				return arr.length/2 + getInsertionIndexForZPos(zPos, 
+						Arrays.copyOfRange(arr, arr.length/2, arr.length));
+			} else {
+				return getInsertionIndexForZPos(zPos, Arrays.copyOfRange(arr, 0, arr.length/2));
 			}
 		}
 	}
 	
+	int i = 0;
 	public void renderAllNodes(Graphics g) {
 		
+		if(i < 1) {
+		String allNodes = "[";
+		for(RN2Node n: renderingLineup) {
+			allNodes+=n.getAbsoluteZPosition()+", ";
+		}
+		allNodes+="]";
+		System.out.println("Node rendererer: "+allNodes);
+		i++;
+		}
+//		
 		for(RN2Node n: renderingLineup) {
 			if(n instanceof RN2PolygonNode) {
 				RN2PolygonNode p = (RN2PolygonNode)n;
-				int[] renderXVert = new int[p.numPoints];
-				int[] renderYVert = new int[p.numPoints];
-				for(int i=0; i<p.numPoints; i++) {
+				int[] renderXVert = new int[p.vertices.length];
+				int[] renderYVert = new int[p.vertices.length];
+				for(int i=0; i<p.vertices.length; i++) {
 					RN2Point vertPoint = new RN2Point(p.vertices[i]);
-					RN2Point absPtPos = n.convertPointToNode(vertPoint, scene);
-					renderXVert[i] = (int)(absPtPos.x - cam.position.x + scene.width*scene.anchorX);
-					renderYVert[i] = (int)(absPtPos.y - cam.position.y + scene.height*scene.anchorY);
+					RN2Point absPtPos = n.convertPointToNode(vertPoint, scene.camera);
+					renderXVert[i] = (int)(absPtPos.x + scene.width*scene.anchorX);
+					renderYVert[i] = (int)(absPtPos.y + scene.height*scene.anchorY);
 				}
-
-				g.setColor(p.color);
-				g.fillPolygon(renderXVert, renderYVert, p.numPoints);
+				
+				int alpha = (int)(p.getAbsoluteOpacity() * 255);
+				g.setColor(new Color(p.color.getRed(), p.color.getGreen(), p.color.getBlue(), alpha));
+				g.fillPolygon(renderXVert, renderYVert, p.vertices.length);
 			}
 		}
 		renderingLineup.clear();
-	}
-	
-	private RN2Point rotatePointAboutOrigin(RN2Point pt, double rad) {
-		double rotX = pt.x, rotY = pt.y;
-		double centerX = 0; double centerY = 0;
-		double newX = centerX + (rotX-centerX)*Math.cos(rad) - (rotY-centerY)*Math.sin(rad);
-		double newY = centerY + (rotX-centerX)*Math.sin(rad) + (rotY-centerY)*Math.cos(rad);
-		
-		return new RN2Point(newX, newY);
 	}
 }

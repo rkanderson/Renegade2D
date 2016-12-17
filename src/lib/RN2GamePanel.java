@@ -28,7 +28,7 @@ public class RN2GamePanel extends JPanel implements KeyListener {
 		backBuffer = new BufferedImage(topFrame.getWidth(), topFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
 	}
 	
-	public void setScene(RN2Scene s) {
+	public void presentScene(RN2Scene s) {
 		scene = s;
 		s.initialize();
 		renderer.setScene(s);
@@ -57,9 +57,9 @@ public class RN2GamePanel extends JPanel implements KeyListener {
 		
 		// Now we render the entire scene!
 		renderer.scheduleNodeForRendering(scene); // Render scene + all it's children!
-		renderer.scheduleNodeForRendering(scene.camera); //Need to specify camera individually 
-													//because camera isn't in the scene's children array
+		
 		renderer.renderAllNodes(backBufferG2);
+
 		
 		// Finally we draw the buffer image onto the main Graphics object
 		g.drawImage(backBuffer, 0 , 0, this);

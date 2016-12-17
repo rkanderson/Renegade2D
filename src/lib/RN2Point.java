@@ -28,4 +28,8 @@ public class RN2Point {
 	public void rotateAboutOriginByRad(double rad) {
 		rotateAboutOtherPointByRad(new RN2Point(0,0), rad);
 	}
+	
+	public String toString() {
+		return "("+x+", "+y+")";
+	}
 }
