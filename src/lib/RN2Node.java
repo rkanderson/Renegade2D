@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class RN2Node {
 	/**
 	 * A generic class to represent any game object at all. Visible or invisible.
-	 * Contains basic properties such as position, scale, rotation, and opcity.
+	 * Contains basic properties such as position, scale, rotation, and opacity.
 	 */
 	
 	public ArrayList<RN2Node> children = new ArrayList<RN2Node>();
@@ -74,7 +74,7 @@ public class RN2Node {
 		} else if(parent.get().parent==null) {
 			return new int[]{parent.get().children.indexOf(this)};
 		} else {
-			return ArrayUtils.concatenate(parent.get().getAddress(), 
+			return RN2ArrayUtils.concatenate(parent.get().getAddress(), 
 					new int[]{parent.get().children.indexOf(this)});
 		}
 	}
@@ -106,29 +106,17 @@ public class RN2Node {
 				
 		// If none of the base cases are satisfied, we must compute the next move
 		// using addresses. Remember that these addresses are like maps that tell you
-		// which turns to take and in which order. So if we took a wrong turn earlier, 
-		// it means we need to go back up.
+		// which turns to take and in which order.
+		// -If this node is a direct ancestor of the destination node, go down
+		//- Otherwise, go up;
 		int[] destinationAddress = destinationNode.getAddress();
 		int[] myAddress = this.getAddress();
-		
-		// I know that if this node's generation number is greater or equal than the destination 
-		// node, I have to go back up. No matter what.
-		if(myAddress.length >= destinationAddress.length) {
-			return parent.get().convertPointToNode(
-					convertPointToBeRelativeToParent(point), destinationNode);
-		}
-		
-		// MAYBE the destination node is a direct descendant of this node. We can tell 
-		// because the first part of the destinationAddress will be the exact same as
-		// this node's address.
-		else if(ArrayUtils.arraysEqual(myAddress, 
+		if(destinationAddress.length > myAddress.length && 
+				RN2ArrayUtils.arraysEqual(myAddress, 
 				Arrays.copyOfRange(destinationAddress, 0, myAddress.length))) {
 			RN2Node rightPathChild = children.get(destinationAddress[myAddress.length]);
 			return rightPathChild.convertPointToNode(convertPointToBeRelativeToChild(point, rightPathChild), destinationNode);
-		} 
-		
-		// Not a direct ancestor. O well. GO up!
-		else {
+		} else {
 			return parent.get().convertPointToNode(
 					convertPointToBeRelativeToParent(point), destinationNode);
 		}
@@ -180,38 +168,7 @@ public class RN2Node {
 			return zRotation + parent.get().getAbsoluteZRotation();
 		}
 	}
-	
-	//public RN2Point getAbsolutePosition() {
-//		if(parent==null) {
-//			return new RN2Point(this.position); // return a dummy object
-//		} else {
-//						
-//			RN2Point pos = new RN2Point(this.position);
-//
-//			pos.rotateAboutOriginByRad(parent.get().getAbsoluteZRotation());
-//			
-//			RN2Vector parentAbsScale = parent.get().getAbsoluteScale();
-//			pos.x *= parentAbsScale.dx;
-//			pos.y *= parentAbsScale.dy;
-//			
-//			RN2Point parentAbsPos = parent.get().getAbsolutePosition();
-//			pos.x += parentAbsPos.x;
-//			pos.y += parentAbsPos.y;
-//			
-//			return pos;
-//		}
-		
-	//}
-	
-//	public RN2Vector getAbsoluteScale() {
-//		if(parent==null) {
-//			return new RN2Vector(xScale, yScale);
-//		} else  {
-//			RN2Vector parentScale = parent.get().getAbsoluteScale();
-//			return new RN2Vector(xScale * parentScale.dx, yScale * parentScale.dy);
-//		}
-//	}
-//	
+
 	
 	/**
 	 * @return the opacity the node should be rendered with.

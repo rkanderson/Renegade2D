@@ -2,7 +2,7 @@ package lib;
 
 import java.lang.reflect.Array;
 
-class ArrayUtils {
+class RN2ArrayUtils {
 	/**
 	 * Class to contain some universal array utility functions.
 	 */
