@@ -13,10 +13,7 @@ public class RN2Node {
 	
 	public ArrayList<RN2Node> children = new ArrayList<RN2Node>();
 	public WeakReference<RN2Node> parent;
-//	private int rank = 0; // Indicates the level of organization in the hierarchy this node is at
-//	private int[] address = {}; //The length and the elements themselves 
-//							   //indicate the exact position in the hierarchy.
-	
+
 	public String name = "unnamed";
 	public RN2Point position = new RN2Point(0, 0);
 	public double zPosition = 0;
@@ -28,18 +25,28 @@ public class RN2Node {
 		
 	}
 	
-	public void setOpacity(double o) throws IllegalStateException {
+	/**
+	 * Sets this node's opacity
+	 * @param o new opacity
+	 * @throws IllegalArgumentException if 0<=opacity<=1 isn't followed.
+	 */
+	public void setOpacity(double o) throws IllegalArgumentException {
 		if(o>1 || o<0) {
-			throw new IllegalStateException("Opacity must be greater than 0 and less than 1.");
+			throw new IllegalArgumentException("Opacity must be greater than 0 and less than 1.");
 		} else {
 			this.opacity = o;
 		}
 	}
 	
-	public void incrementOpacity(double o) throws IllegalStateException {
+	public void incrementOpacity(double o) throws IllegalArgumentException {
 		setOpacity(opacity + o);
 	}
 	
+	/**
+	 * Adds a given node to this node's children.
+	 * @param newNode the node to be added
+	 * @throws IllegalStateException if the node to be added already is a child of another node
+	 */
 	public void addChild(RN2Node newNode) throws IllegalStateException {
 		if(newNode.parent == null) {
 			children.add(newNode);
@@ -49,6 +56,11 @@ public class RN2Node {
 		}
 	}
 	
+	/**
+	 * Removes the given child node from its parent node's children array.
+	 * @param child the child to be removed
+	 * @throws IllegalStateException if the unwanted child can't be found
+	 */
 	public void removeChild(RN2Node child) throws IllegalStateException {
 		if(children.contains(child)) {
 			children.remove(child);
@@ -57,6 +69,16 @@ public class RN2Node {
 			throw new IllegalStateException("The child isn't in the "
 					+ "children array and therfore can't be removed.");
 		}
+	}
+	
+	public RN2Node getChildNodeByName(String name) throws IllegalStateException {
+		for(RN2Node child: children) {
+			if(child.name.equals(name)) {
+				return child;
+			}
+		}
+		throw new IllegalStateException("No child with the specified name could be "
+				+ "found from this parent's children.");
 	}
 	
 	/**
