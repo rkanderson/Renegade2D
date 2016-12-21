@@ -36,6 +36,7 @@ public class RN2GamePanel extends JPanel implements KeyListener {
 	
 	public void update(double deltaTime) {
 		scene.update(deltaTime);
+		scene.runAllActionBlocks(deltaTime);
 	}
 	
 	

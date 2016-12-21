@@ -160,14 +160,14 @@ public class RN2Node {
 		}
 	}
 	
-	public double getAbsoluteZRotation() {
-		// returns the zPosition from the ultimate perspective (ie relative to the highest parent)
-		if(parent==null) {
-			return zRotation;
-		} else {
-			return zRotation + parent.get().getAbsoluteZRotation();
-		}
-	}
+//	public double getAbsoluteZRotation() {
+//		// returns the zPosition from the ultimate perspective (ie relative to the highest parent)
+//		if(parent==null) {
+//			return zRotation;
+//		} else {
+//			return zRotation + parent.get().getAbsoluteZRotation();
+//		}
+//	}
 
 	
 	/**

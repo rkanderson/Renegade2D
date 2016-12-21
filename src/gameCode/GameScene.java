@@ -22,6 +22,8 @@ public class GameScene extends RN2Scene {
 		pn.zPosition = 2;
 		pn.color = Color.GREEN;
 		
+		this.runAction(new RN2Action.FadeOutAction(pn, 1.0));
+		
 		RN2PolygonNode speck = RN2PolygonNode.RectBuilder.builder().withWidth(50).withHeight(50).build();
 		speck.color = new Color(254, 164, 196);
 		speck.zPosition = 1;

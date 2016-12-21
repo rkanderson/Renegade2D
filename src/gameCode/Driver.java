@@ -4,8 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import lib.RN2GamePanel;
-import lib.RN2Scene;
+import lib.*;
 
 public class Driver {
 	static final double framePause = 1.0/60.0;

@@ -65,18 +65,18 @@ class RN2NodeRenderer {
 		}
 	}
 	
-	int i = 0;
+//	int i = 0;
 	public void renderAllNodes(Graphics g) {
 		
-		if(i < 1) {
-		String allNodes = "[";
-		for(RN2Node n: renderingLineup) {
-			allNodes+=n.getAbsoluteZPosition()+", ";
-		}
-		allNodes+="]";
-		System.out.println("Node rendererer: "+allNodes);
-		i++;
-		}
+//		if(i < 1) {
+//		String allNodes = "[";
+//		for(RN2Node n: renderingLineup) {
+//			allNodes+=n.getAbsoluteZPosition()+", ";
+//		}
+//		allNodes+="]";
+//		System.out.println("Node rendererer: "+allNodes);
+//		i++;
+//		}
 //		
 		for(RN2Node n: renderingLineup) {
 			if(n instanceof RN2PolygonNode) {
