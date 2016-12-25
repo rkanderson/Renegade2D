@@ -1,9 +1,8 @@
 package lib;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RN2Node {
 	/**
@@ -11,7 +10,7 @@ public class RN2Node {
 	 * Contains basic properties such as position, scale, rotation, and opacity.
 	 */
 	
-	public ArrayList<RN2Node> children = new ArrayList<RN2Node>();
+	public CopyOnWriteArrayList<RN2Node> children = new CopyOnWriteArrayList<RN2Node>();
 	public WeakReference<RN2Node> parent;
 
 	public String name = "unnamed";

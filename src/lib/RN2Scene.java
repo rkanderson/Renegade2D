@@ -40,7 +40,13 @@ abstract public class RN2Scene extends RN2Node{
 	
 	abstract public void initialize();
 	abstract public void update(double deltaTime);
+	
 	abstract public void keyDown(KeyEvent e);
 	abstract public void keyReleased(KeyEvent e);
-	
+	abstract public void mouseDown(RN2Click c);
+	abstract public void mouseReleased(RN2Click c);
+	abstract public void mouseMoved(RN2Click c);
+	abstract public void mouseDragged(RN2Click c);
+
+
 }

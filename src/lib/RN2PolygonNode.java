@@ -9,7 +9,7 @@ public class RN2PolygonNode extends RN2Node {
 	 * different pivot and scaling behaviors. Convenient builder classes have been defined
 	 * for common polygons.
 	 */
-	RN2Point[] vertices;
+	public RN2Point[] vertices;
 	public Color color = Color.RED;
 	public RN2PolygonNode(double[] xv, double[] yv, int numPoints) {
 		vertices = new RN2Point[numPoints];
@@ -58,6 +58,7 @@ public class RN2PolygonNode extends RN2Node {
 		}
 		public RegularPolygonBuilder withNumOfSides(int n) {numSides = n; return this;}
 		public RegularPolygonBuilder withRadius(double r) {radius = r; return this;}
+
 		public RN2PolygonNode build() {
 			RN2Point[] vertices = new RN2Point[numSides];
 			double deltaAngle = 2*Math.PI/numSides;

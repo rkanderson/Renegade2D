@@ -1,7 +1,7 @@
 package lib;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.BasicStroke;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -65,19 +65,8 @@ class RN2NodeRenderer {
 		}
 	}
 	
-//	int i = 0;
-	public void renderAllNodes(Graphics g) {
+	public void renderAllNodes(Graphics2D g) {
 		
-//		if(i < 1) {
-//		String allNodes = "[";
-//		for(RN2Node n: renderingLineup) {
-//			allNodes+=n.getAbsoluteZPosition()+", ";
-//		}
-//		allNodes+="]";
-//		System.out.println("Node rendererer: "+allNodes);
-//		i++;
-//		}
-//		
 		for(RN2Node n: renderingLineup) {
 			if(n instanceof RN2PolygonNode) {
 				RN2PolygonNode p = (RN2PolygonNode)n;
@@ -93,6 +82,17 @@ class RN2NodeRenderer {
 				int alpha = (int)(p.getAbsoluteOpacity() * 255);
 				g.setColor(new Color(p.color.getRed(), p.color.getGreen(), p.color.getBlue(), alpha));
 				g.fillPolygon(renderXVert, renderYVert, p.vertices.length);
+			} else if(n instanceof RN2LineNode) {
+				RN2LineNode lineNode = (RN2LineNode)n;
+				RN2Point pointA = lineNode.convertPointToNode(lineNode.pointA, cam),
+						pointB = lineNode.convertPointToNode(lineNode.pointB, cam);
+				pointA.x += scene.width*scene.anchorX; pointB.x += scene.width*scene.anchorX;
+				pointA.y += scene.height*scene.anchorY; pointB.y += scene.height*scene.anchorY;
+				
+				g.setStroke(new BasicStroke((int)lineNode.thickness));				
+				g.setColor(lineNode.color);
+				g.drawLine((int)pointA.x, (int)pointA.y,
+						(int)pointB.x, (int)pointB.y);
 			}
 		}
 		renderingLineup.clear();

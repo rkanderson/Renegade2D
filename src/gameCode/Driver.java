@@ -14,7 +14,6 @@ public class Driver {
         RN2GamePanel gameView = new RN2GamePanel();
         frame.add(gameView);
         gameView.initialize();
-        frame.addKeyListener(gameView);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         

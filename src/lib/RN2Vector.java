@@ -6,4 +6,7 @@ public class RN2Vector {
 		this.dx = dx;
 		this.dy = dy;
 	}
+	public String toString() {
+		return "("+dx+", "+dy+")";
+	}
 }

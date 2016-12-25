@@ -109,4 +109,28 @@ public class GameScene extends RN2Scene {
 		
 	}
 
+	@Override
+	public void mouseDown(RN2Click c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(RN2Click c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(RN2Click c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(RN2Click c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
