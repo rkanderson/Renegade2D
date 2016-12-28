@@ -108,6 +108,9 @@ abstract public class RN2Action {
 			public void reset() {
 				indexImOn = 0;
 				finished = false;
+				for(RN2Action a: subActions) {
+					a.reset();
+				}
 			}
 
 			@Override
