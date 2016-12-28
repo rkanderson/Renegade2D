@@ -22,6 +22,13 @@ abstract public class RN2Action {
 	}
 	
 	/**
+	 * Should reset the action to its original, starter state. Should be overridden by children classes.
+	 */
+	public void reset() {
+		
+	}
+	
+	/**
 	 * @return if the action is completed or not. If it is completed, the action will be
 	 * removed from whatever is using it cuz it's useless now.
 	 */
@@ -64,6 +71,11 @@ abstract public class RN2Action {
 				actionBlock.run(node, timeElapsed);
 			}
 			
+			@Override
+			public void reset() {
+				timeElapsed = 0;
+			}
+			
 		};
 	}
 	
@@ -91,6 +103,12 @@ abstract public class RN2Action {
 			public boolean actionFinished() {
 				return finished;
 			}
+			
+			@Override
+			public void reset() {
+				indexImOn = 0;
+				finished = false;
+			}
 
 			@Override
 			protected void runActionBlock(double deltaTime) {
@@ -102,6 +120,36 @@ abstract public class RN2Action {
 					if(indexImOn == subActions.length) {
 						finished = true;
 					}
+				}
+			}
+		};
+	}
+	
+	/**
+	 * Causes a passed in action to repeat indefinitely.
+	 * @param action the base action from which the forever repeating one will be created.
+	 * @return the new repeating action.
+	 */
+	public static RN2Action repeatForever(RN2Action action) {
+		return new RN2Action() {
+
+			@Override
+			public void activate(RN2Node n) {
+				super.activate(n);
+				action.reset(); //<-Just in case the action was some kinda thing that was already being used.
+				action.activate(n);
+			}
+			
+			@Override
+			public boolean actionFinished() {
+				return false;
+			}
+
+			@Override
+			protected void runActionBlock(double deltaTime) {
+				action.runActionBlock(deltaTime);
+				if(action.actionFinished()) {
+					action.reset();
 				}
 			}
 		};
@@ -126,6 +174,11 @@ abstract public class RN2Action {
 				timeElapsed += deltaTime;
 			}
 			
+			@Override
+			public void reset() {
+				timeElapsed = 0;
+			}
+			
 		};
 	}
 	
@@ -141,6 +194,11 @@ abstract public class RN2Action {
 			@Override
 			public boolean actionFinished() {
 				return timeElapsed >= duration;
+			}
+			
+			@Override
+			public void reset() {
+				timeElapsed = 0;
 			}
 			
 			@Override
