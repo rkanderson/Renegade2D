@@ -2,6 +2,7 @@ package lib;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RN2Node {
@@ -19,9 +20,39 @@ public class RN2Node {
 	public double zRotation = 0; // in radians
 	public double xScale = 1, yScale = 1;
 	protected double opacity = 1;
+	HashMap<String, RN2Action> runningActions = new HashMap<String, RN2Action>();
 	
 	public RN2Node() {
 		
+	}
+	
+	public void runAllActionsForSelfAndChildren(double deltaTime) {
+		for(RN2Action action: runningActions.values()) {
+			action.runTheActionBlock(deltaTime);
+		}
+		
+		runningActions.entrySet().removeIf(e-> e.getValue().actionFinished() );
+		
+		if(children.size()==0) {
+			//Woohoo! Done!
+		} else {
+			for(RN2Node child: children) {
+				child.runAllActionsForSelfAndChildren(deltaTime);
+			}
+		}
+	}
+	
+	public void runActionWithKey(RN2Action a, String key) {
+		a.activate(this);
+		runningActions.put(key, a);
+	}
+	
+	public void runAction(RN2Action a) {
+		runActionWithKey(a, "null");
+	}
+	
+	public RN2Action getActionWithKey(String key) {
+		return runningActions.get(key);
 	}
 	
 	/**

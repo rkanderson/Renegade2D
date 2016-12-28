@@ -51,9 +51,8 @@ public class RN2GamePanel extends JPanel implements KeyListener, MouseListener, 
 	
 	public void update(double deltaTime) {
 		scene.update(deltaTime);
-		scene.runAllActionBlocks(deltaTime);
+		scene.runAllActionsForSelfAndChildren(deltaTime);
 	}
-	
 	
 	@Override
 	public void paint(Graphics g) {
