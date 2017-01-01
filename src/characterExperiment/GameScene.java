@@ -23,7 +23,13 @@ public class GameScene extends RN2Scene {
 				RN2Action.addScaleValueOverDuration(1, 1, 0.5)
 				});
 		
-		player.runAction(RN2Action.repeatForever(seq));
+		player.runActionWithCompletionBlock(seq, new RN2Action.CompletionBlock() {
+			
+			@Override
+			public void run() {
+				System.out.println("Action complete!");
+			}
+		});
 	}
 
 	@Override

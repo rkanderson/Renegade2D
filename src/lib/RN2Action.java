@@ -45,6 +45,10 @@ abstract public class RN2Action {
 		abstract public void run(RN2Node node, double timeElapsed);
 	}
 	
+	abstract public static class CompletionBlock {
+		abstract public void run();
+	}
+	
 	/**
 	 * This method is a shortcut way to create custom actions.
 	 * @param duration is how long the action will be active.

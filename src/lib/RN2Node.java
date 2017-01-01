@@ -1,8 +1,10 @@
 package lib;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RN2Node {
@@ -20,22 +22,29 @@ public class RN2Node {
 	public double zRotation = 0; // in radians
 	public double xScale = 1, yScale = 1;
 	protected double opacity = 1;
-	HashMap<String, RN2Action> runningActions = new HashMap<String, RN2Action>();
+	LinkedHashMap<String, RN2Action> runningActions = new LinkedHashMap<String, RN2Action>();
+	HashMap<RN2Action, RN2Action.CompletionBlock> actionCompletionBlocks 
+		= new HashMap<RN2Action, RN2Action.CompletionBlock>(); 
 	
 	public RN2Node() {
 		
 	}
 	
 	public void runAllActionsForSelfAndChildren(double deltaTime) {
-		for(RN2Action action: runningActions.values()) {
+		ArrayList<RN2Action> actionsArr = new ArrayList<RN2Action>(runningActions.values());
+		ArrayList<String> keysArr = new ArrayList<String>(runningActions.keySet());
+		for(int i=runningActions.size()-1; i>=0; i--) {
+			RN2Action action = actionsArr.get(i);
 			action.runTheActionBlock(deltaTime);
+			if(action.actionFinished()) {
+				runningActions.remove(keysArr.get(i));
+				if(this.actionCompletionBlocks.containsKey(action)) {
+					this.actionCompletionBlocks.remove(action).run();
+				}
+			}
 		}
-		
-		runningActions.entrySet().removeIf(e-> e.getValue().actionFinished() );
-		
-		if(children.size()==0) {
-			//Woohoo! Done!
-		} else {
+				
+		if(children.size() > 0) {		
 			for(RN2Node child: children) {
 				child.runAllActionsForSelfAndChildren(deltaTime);
 			}
@@ -49,6 +58,11 @@ public class RN2Node {
 	
 	public void runAction(RN2Action a) {
 		runActionWithKey(a, "null");
+	}
+	
+	public void runActionWithCompletionBlock(RN2Action a, RN2Action.CompletionBlock completion) {
+		runAction(a);
+		this.actionCompletionBlocks.put(a, completion);
 	}
 	
 	public RN2Action getActionWithKey(String key) {
