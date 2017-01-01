@@ -26,7 +26,28 @@ public class RN2Point {
 	}
 	
 	public void rotateAboutOriginByRad(double rad) {
-		rotateAboutOtherPointByRad(new RN2Point(0,0), rad);
+//		rotateAboutOtherPointByRad(new RN2Point(0,0), rad);
+		double rotX = this.x, rotY = this.y;
+		double newX = rotX*Math.cos(rad) - rotY*Math.sin(rad);
+		double newY = rotX*Math.sin(rad) + rotY*Math.cos(rad);
+		this.x = newX;
+		this.y = newY;
+	}
+	
+	public void clipX(double min, double max) {
+		if(this.x < min) {
+			this.x = min;
+		} else if(this.x > max) {
+			this.x = max;
+		}
+	}
+	
+	public void clipY(double min, double max) {
+		if(this.y < min) {
+			this.y = min;
+		} else if(this.y > max) {
+			this.y = max;
+		}
 	}
 	
 	public String toString() {

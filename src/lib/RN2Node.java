@@ -55,6 +55,10 @@ public class RN2Node {
 		return runningActions.get(key);
 	}
 	
+	public RN2Action removeActionWithKey(String key) {
+		return runningActions.remove(key);
+	}
+	
 	/**
 	 * Sets this node's opacity
 	 * @param o new opacity
