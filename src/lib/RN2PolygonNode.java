@@ -23,11 +23,15 @@ public class RN2PolygonNode extends RN2Node {
 	
 	@Override
 	public RN2PolygonNode duplicate() {
-		RN2PolygonNode clone = new RN2PolygonNode(vertices.clone());
-		setSameBasicPropertiesOnNode(clone);
-		addDuplicatesOfAllChildrenToNode(clone);
-		clone.color = new Color(color.getRed(), color.getGreen(), color.getBlue());
+		RN2PolygonNode clone = new RN2PolygonNode(null);
+		this.copyPolygonNodeClassLevelAttributesToOther(clone);
 		return clone;
+	}
+	
+	protected void copyPolygonNodeClassLevelAttributesToOther(RN2PolygonNode other) {
+		super.copyNodeClassLevelAttributesToOther(other);
+		other.vertices = vertices.clone();
+		other.color = new Color(color.getRed(), color.getGreen(), color.getBlue());
 	}
 	
 	// Builders added for your convenience when creating a polygon node. you're welcome.

@@ -18,4 +18,19 @@ public class RN2LineNode extends RN2Node {
 	public RN2LineNode(double x1, double y1, double x2, double y2) {
 		this(new RN2Point(x1, y1), new RN2Point(x2, y2));
 	}
+	
+	@Override
+	public RN2LineNode duplicate() {
+		RN2LineNode clone = new RN2LineNode(0, 0, 0, 0);
+		this.copyLineNodeClassLevelAttributesToOther(clone);
+		return clone;
+	}
+	
+	protected void copyLineNodeClassLevelAttributesToOther(RN2LineNode other) {
+		super.copyNodeClassLevelAttributesToOther(other); //<-do for parent
+		other.pointA = new RN2Point(this.pointA);
+		other.pointB = new RN2Point(this.pointB);
+		other.color = color;
+		other.thickness = thickness;
+	}
 }

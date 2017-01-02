@@ -16,6 +16,8 @@ public class GameScene extends RN2Scene {
 	public void initialize() {
 		player = new Character();
 		addChild(player);
+		
+		
 		RN2Action seq = RN2Action.sequence(new RN2Action[] {
 				RN2Action.moveByVectorOverDuration(new RN2Vector(-20, -20), 0.5),
 				RN2Action.moveByVectorOverDuration(new RN2Vector(20, 20), 0.5),
@@ -30,6 +32,14 @@ public class GameScene extends RN2Scene {
 				System.out.println("Action complete!");
 			}
 		});
+		
+		RN2Node cp = player.duplicate();
+		
+		cp.position.x = 100;
+		cp.zRotation = -1;
+		addChild(cp);
+		
+		
 	}
 
 	@Override

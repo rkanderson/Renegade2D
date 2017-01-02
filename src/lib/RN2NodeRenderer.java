@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class RN2NodeRenderer {
+	private boolean readyToRender = false;
 	public ArrayList<RN2Node> renderingLineup = new ArrayList<RN2Node>();
 	private RN2Scene scene;
 	private RN2CameraNode cam;
@@ -15,6 +16,7 @@ class RN2NodeRenderer {
 	public void setScene(RN2Scene s) {
 		this.scene = s;
 		this.cam = s.camera;
+		readyToRender = true;
 	}
 	public void scheduleNodeForRendering(RN2Node n) {
 		// Insert the node at the right location in the rendering list
@@ -66,7 +68,7 @@ class RN2NodeRenderer {
 	}
 	
 	public void renderAllNodes(Graphics2D g) {
-		
+		if(!readyToRender) return;
 		for(RN2Node n: renderingLineup) {
 			if(n instanceof RN2PolygonNode) {
 				RN2PolygonNode p = (RN2PolygonNode)n;

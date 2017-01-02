@@ -6,7 +6,6 @@ import lib.*;
 
 public class Character extends RN2Node {
 	RN2Node ladder;
-	int numOfJoints = 5;
 	public Character() {
 		constructBody();
 	}
@@ -14,23 +13,23 @@ public class Character extends RN2Node {
 		RN2PolygonNode mainBody = new RN2PolygonNode.RectBuilder()
 				.withWidth(50).withHeight(50).build();
 		mainBody.color = Color.BLUE;
+		mainBody.zPosition = 2;
 		addChild(mainBody);
 		
-//		ladder = new RN2Node();
-//		ladder.position.y = -25;
-//		this.addChild(ladder);
-//		RN2Point prevPoint = new RN2Point(0, 0);
-//		for(int i=1; i<numOfJoints; i++) {
-//			if(i % 2 == 0) {
-//				RN2Point nextPoint = new RN2Point(0, i*10);
-//				RN2LineNode
-//
-//			} else 
-//				RN2Point nextPoint = new RN2Point(-25, i*10);
-//				
-//			}
-//		}
+		ladder = new RN2Node();
+		ladder.position.y = -25;
+		this.addChild(ladder);
 		
+		RN2LineNode modelMember = new RN2LineNode(0, 0, 0, 0);
+		modelMember.thickness = 3;
+		modelMember.color = new Color(100, 100, 255);
+		
+		for(int i=0; i<20; i++) {
+			RN2LineNode member = modelMember.duplicate();
+			member.pointA = new RN2Point(Math.pow(-1, i-1)*15, (i-1)*5 + 30);
+			member.pointB =	new RN2Point(Math.pow(-1, i)*15,  i*5 + 30);
+			ladder.addChild(member);
+		}
 		
 	}
 	

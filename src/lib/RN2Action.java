@@ -18,7 +18,11 @@ abstract public class RN2Action {
 	 * @param n the node that the action should affect.
 	 */
 	public void activate(RN2Node n) {
-		node = n;
+		setNode(n);
+	}
+	
+	public void setNode(RN2Node n) {
+		node  = n;
 	}
 	
 	/**

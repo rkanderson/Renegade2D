@@ -30,6 +30,22 @@ public class RN2Node {
 		
 	}
 	
+	public RN2Node(RN2Node other) {
+		position.x = other.position.x;
+		position.y = other.position.y;
+		zPosition = other.zPosition;
+		opacity = other.opacity;
+		xScale = other.xScale; 
+		yScale = other.yScale;
+		zRotation = other.zRotation;
+	}
+	
+	/**
+	 * Steps through all the actions for this node with the given delta time,
+	 * removing actions if they expire, and calling their completion blocks
+	 * if they have any. Then it does it for all its children (recursion power!)
+	 * @param deltaTime time passed since last call
+	 */
 	public void runAllActionsForSelfAndChildren(double deltaTime) {
 		ArrayList<RN2Action> actionsArr = new ArrayList<RN2Action>(runningActions.values());
 		ArrayList<String> keysArr = new ArrayList<String>(runningActions.keySet());
@@ -56,11 +72,18 @@ public class RN2Node {
 		runningActions.put(key, a);
 	}
 	
+	public void runActionWithKey(RN2Action a, String key, 
+			RN2Action.CompletionBlock completion) {
+		this.runActionWithKey(a, key);	
+		this.actionCompletionBlocks.put(a, completion);
+	}
+
+	
 	public void runAction(RN2Action a) {
 		runActionWithKey(a, "null");
 	}
 	
-	public void runActionWithCompletionBlock(RN2Action a, RN2Action.CompletionBlock completion) {
+	public void runAction(RN2Action a, RN2Action.CompletionBlock completion) {
 		runAction(a);
 		this.actionCompletionBlocks.put(a, completion);
 	}
@@ -253,24 +276,43 @@ public class RN2Node {
 	
 	public RN2Node duplicate() {
 		RN2Node clone = new RN2Node();
-		setSameBasicPropertiesOnNode(clone);
-		addDuplicatesOfAllChildrenToNode(clone);
+		this.copyNodeClassLevelAttributesToOther(clone);
 		return clone;
 	}
 	
-	protected void setSameBasicPropertiesOnNode(RN2Node other) {
+	/**
+	 * Copies attributes specific to RN2Node to another RN2Node. Doesn't
+	 * include actions as of now.
+	 * @param other the other node to have stuff copied to
+	 */
+	protected void copyNodeClassLevelAttributesToOther(RN2Node other) {
+		// Basic transform properties
 		other.position.x = position.x;
 		other.position.y = position.y;
 		other.zPosition = zPosition;
 		other.opacity = opacity;
 		other.xScale = xScale; other.yScale = yScale;
 		other.zRotation = zRotation;
-	}
-	
-	protected void addDuplicatesOfAllChildrenToNode(RN2Node other) {
+		
+		// Actions
+//		other.runningActions = (LinkedHashMap<String, RN2Action>)
+//				runningActions.clone();
+//		other.actionCompletionBlocks = (HashMap<RN2Action, RN2Action.CompletionBlock>)
+//				actionCompletionBlocks.clone();
+//		ArrayList<RN2Action> othersActions = 
+//				new ArrayList<RN2Action>(other.runningActions.values());
+//		for(RN2Action a: othersActions) {
+//			a.setNode(other);
+//		}
+		
+		// Add duplicates of all children
 		for(RN2Node child: children) {
 			other.addChild(child.duplicate());
 		}
 	}
+	
+//	protected void addDuplicatesOfAllChildrenToNode(RN2Node other) {
+//		
+//	}
 		
 }
