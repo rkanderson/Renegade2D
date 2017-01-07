@@ -80,7 +80,13 @@ public class RN2Node {
 
 	
 	public void runAction(RN2Action a) {
-		runActionWithKey(a, "null");
+		String key = "unamed";
+		int i = 1;
+		while(runningActions.containsKey(key)) {
+			key = "unamed"+i;
+			i+=1;
+		}
+		runActionWithKey(a, key);
 	}
 	
 	public void runAction(RN2Action a, RN2Action.CompletionBlock completion) {

@@ -22,7 +22,7 @@ public class RN2Click {
 		} catch(ClassCastException e) {
 			throw new IllegalArgumentException("The passed in node needs to have an "
 					+ "RN2Scene object as its highest ancestor. This node u just passed"
-					+ " is in an improper family or just kinda floating around on it's "
+					+ " is in an improper family or just kinda floating around on its "
 					+ "own. Be sure that it's added to game scene directly or indirectly.");
 		}
 		// It's very easy to convert the node to be relative to where the camera would be,

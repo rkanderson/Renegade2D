@@ -1,4 +1,4 @@
-package characterExperiment;
+package demoCode;
 
 import java.awt.Color;
 
@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import lib.*;
 
 public class Driver {
-	static final double framePause = 1.0/60.0;
+	static final double framePause = 1.0/60.0; //60 FPS
 	public static void main(String[] args) throws InterruptedException {
-		JFrame frame = new JFrame("Character Experiment");
+		JFrame frame = new JFrame("Change Title in Driver!");
         frame.setSize(800, 600);
         RN2GamePanel gameView = new RN2GamePanel();
         frame.add(gameView);
